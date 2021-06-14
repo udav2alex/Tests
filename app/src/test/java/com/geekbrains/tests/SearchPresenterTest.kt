@@ -4,16 +4,19 @@ import com.geekbrains.tests.model.SearchResponse
 import com.geekbrains.tests.model.SearchResult
 import com.geekbrains.tests.presenter.search.SearchPresenter
 import com.geekbrains.tests.repository.GitHubRepository
+import com.geekbrains.tests.view.details.ViewDetailsContract
 import com.geekbrains.tests.view.search.ViewSearchContract
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import retrofit2.Response
 
 //Тестируем наш Презентер
+@Suppress("UNCHECKED_CAST")
 class SearchPresenterTest {
 
     private lateinit var presenter: SearchPresenter
@@ -30,7 +33,8 @@ class SearchPresenterTest {
         //Раньше было @RunWith(MockitoJUnitRunner.class) в аннотации к самому классу (SearchPresenterTest)
         MockitoAnnotations.initMocks(this)
         //Создаем Презентер, используя моки Репозитория и Вью, проинициализированные строкой выше
-        presenter = SearchPresenter(viewContract, repository)
+//        presenter = SearchPresenter(viewContract, repository)
+        presenter = SearchPresenter(repository)
     }
 
     @Test //Проверим вызов метода searchGitHub() у нашего Репозитория
@@ -148,5 +152,22 @@ class SearchPresenterTest {
 
         //Убеждаемся, что ответ от сервера обрабатывается корректно
         verify(viewContract, times(1)).displaySearchResults(searchResults, 101)
+    }
+
+    @Test
+    fun onAttach_Test() {
+        val newView = mock(ViewSearchContract::class.java)
+        presenter.onAttach(newView)
+
+        assertEquals(newView, presenter.viewContract)
+    }
+
+    @Test
+    fun onDetach_Test() {
+        val newView = mock(ViewSearchContract::class.java)
+        presenter.onAttach(newView)
+        presenter.onDetach()
+
+        assertNull(presenter.viewContract)
     }
 }

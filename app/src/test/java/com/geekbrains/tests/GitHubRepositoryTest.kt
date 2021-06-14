@@ -15,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@Suppress("UNCHECKED_CAST")
 class GitHubRepositoryTest {
 
     private lateinit var repository: GitHubRepository
