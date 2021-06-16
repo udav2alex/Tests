@@ -12,22 +12,12 @@ import java.util.*
 
 class DetailsActivity : AppCompatActivity(), ViewDetailsContract {
 
-    private val presenter: PresenterDetailsContract = DetailsPresenter()
+    private val presenter: PresenterDetailsContract = DetailsPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         setUI()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.onAttach(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onDetach()
     }
 
     private fun setUI() {
